@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RC Taller Automotriz</title>
+  <link rel="icon" href="img/RC.png" type="image/png">
+
+  <style>
+    :root{
+      --negro-fondo:#0B0F1A;
+      --azul-principal:#1E90FF;
+      --azul-secundario:#0D1B2A;
+      --blanco:#FFFFFF;
+      --gris:#CFCFCF;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Segoe UI', Arial, Helvetica, sans-serif;
+    }
+
+    body{
+      background:var(--negro-fondo);
+      color:var(--gris);
+    }
+
+    /* HEADER */
+    header{
+      background:linear-gradient(90deg, var(--negro-fondo), var(--azul-secundario));
+      padding:20px 40px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      border-bottom:1px solid rgba(255,255,255,0.1);
+    }
+
+    .logo{
+      height:55px;
+      filter: drop-shadow(0 0 12px rgba(30,144,255,0.6));
+    }
+
+    nav a{
+      color:var(--blanco);
+      text-decoration:none;
+      margin-left:20px;
+      font-weight:600;
+      position:relative;
+    }
+
+    nav a::after{
+      content:"";
+      position:absolute;
+      width:0;
+      height:2px;
+      background:var(--azul-principal);
+      left:0;
+      bottom:-5px;
+      transition:0.3s;
+    }
+
+    nav a:hover::after{
+      width:100%;
+    }
+
+    /* HERO */
+    .hero{
+      background:linear-gradient(rgba(11,15,26,0.85), rgba(11,15,26,0.9)),
+      url('https://images.unsplash.com/photo-1515923152115-758a6b16f8b9');
+      background-size:cover;
+      background-position:center;
+      height:85vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      color:var(--blanco);
+      padding:20px;
+    }
+
+    .hero h2{
+      font-size:46px;
+      margin-bottom:15px;
+    }
+
+    .hero p{
+      font-size:18px;
+      margin-bottom:30px;
+      color:#e0e0e0;
+    }
+
+    .btn{
+      background:var(--azul-principal);
+      color:var(--blanco);
+      padding:14px 34px;
+      border-radius:30px;
+      text-decoration:none;
+      box-shadow:0 0 20px rgba(30,144,255,0.4);
+      transition:0.3s;
+    }
+
+    .btn:hover{
+      transform:translateY(-3px);
+      box-shadow:0 0 30px rgba(30,144,255,0.7);
+    }
+
+    /* SECTIONS */
+    section{
+      padding:70px 40px;
+      max-width:1200px;
+      margin:auto;
+    }
+
+    section h3{
+      text-align:center;
+      margin-bottom:50px;
+      font-size:34px;
+      color:var(--blanco);
+    }
+
+    .services{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(250px,1fr));
+      gap:30px;
+    }
+
+    .service{
+      background:linear-gradient(145deg, var(--azul-secundario), #02040a);
+      padding:30px;
+      border-radius:16px;
+      text-align:center;
+      box-shadow:0 10px 25px rgba(0,0,0,0.6);
+      transition:0.3s;
+    }
+
+    .service:hover{
+      transform:translateY(-8px);
+    }
+
+    .service h4{
+      color:var(--azul-principal);
+      margin-bottom:10px;
+    }
+
+    .about{
+      background:linear-gradient(145deg, var(--azul-secundario), #02040a);
+      padding:35px;
+      border-radius:16px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.6);
+      line-height:1.8;
+    }
+
+    /* CONTACTO ICONOS */
+    .contacto-icons{
+      display:flex;
+      flex-direction:column;
+      gap:20px;
+    }
+
+    .icon-link{
+      display:flex;
+      align-items:center;
+      gap:15px;
+      text-decoration:none;
+      color:var(--azul-principal);
+      font-size:16px;
+      transition:0.3s;
+    }
+
+    .icon-link img{
+      width:28px;
+      height:28px;
+    }
+
+    .icon-link:hover{
+      color:var(--blanco);
+      transform:translateX(6px);
+    }
+
+    .horario{
+      margin-top:30px;
+      color:#dcdcdc;
+      line-height:1.7;
+    }
+
+    /* FOOTER */
+    footer{
+      background:#02040a;
+      color:#9aa4b2;
+      text-align:center;
+      padding:25px;
+      margin-top:60px;
+      border-top:1px solid rgba(255,255,255,0.1);
+    }
+
+    @media(max-width:768px){
+      header{
+        flex-direction:column;
+      }
+      nav{
+        margin-top:12px;
+      }
+      .hero h2{
+        font-size:32px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <img src="img/RC-logo.png" alt="RC Taller Automotriz" class="logo">
+  <nav>
+    <a href="#inicio">Inicio</a>
+    <a href="#servicios">Servicios</a>
+    <a href="#nosotros">Nosotros</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+</header>
+
+<section class="hero" id="inicio">
+  <div>
+    <h2>Tu vehículo en manos expertas</h2>
+    <p>Mantenimiento, diagnóstico y reparación con tecnología y confianza</p>
+    <a href="#contacto" class="btn">Solicitar Servicio</a>
+  </div>
+</section>
+
+<section id="servicios">
+  <h3>Nuestros Servicios</h3>
+  <div class="services">
+    <div class="service"><h4>Mantenimiento Preventivo</h4><p>Cambio de aceite y revisiones generales.</p></div>
+    <div class="service"><h4>Diagnóstico Computarizado</h4><p>Escaneo profesional de fallas.</p></div>
+    <div class="service"><h4>Frenos y Suspensión</h4><p>Seguridad y estabilidad garantizadas.</p></div>
+    <div class="service"><h4>Mecánica General</h4><p>Soluciones confiables.</p></div>
+  </div>
+</section>
+
+<section id="nosotros">
+  <h3>Sobre Nosotros</h3>
+  <div class="about">
+    <p>
+      En <strong>RC Taller Automotriz</strong> trabajamos con transparencia,
+      puntualidad y compromiso para brindarte un servicio profesional y moderno.
+    </p>
+  </div>
+</section>
+
+<section id="contacto">
+  <h3>Contacto</h3>
+  <div class="about contacto-icons">
+
+    <p>Direccion: </p>
+    <a href="https://www.google.com/maps/search/?api=1&query=Avenida+Universitaria+9452+Comas+Lima" target="_blank" class="icon-link">
+      <img src="img/map.png"> Avenida Universitaria N° 9452, Comas
+    </a>
+
+    <a href="https://wa.me/51935983152" target="_blank" class="icon-link">
+      <img src="img/whatsapp.png"> +51 935 983 152
+    </a>
+
+    <a href="mailto:contacto@rctallerautomotriz.com" class="icon-link">
+      <img src="img/email.png"> contacto@rctallerautomotriz.com
+    </a>
+
+    <a href="https://www.instagram.com/rc_taller_automotriz" target="_blank" class="icon-link">
+      <img src="img/instagram.png"> @rc_taller_automotriz
+    </a>
+
+    <p class="horario">
+      <strong>Horario:</strong><br>
+      Lunes a Viernes: 8:00 AM - 6:00 PM<br>
+      Miércoles: 10:00 AM - 4:00 PM<br>
+      Sábados: 8:00 AM - 6:00 PM
+    </p>
+
+  </div>
+</section>
+
+<footer>
+  © 2025 RC Taller Automotriz | Todos los derechos reservados
+</footer>
+
+</body>
+</html>

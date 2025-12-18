@@ -42,6 +42,10 @@
       filter: drop-shadow(0 0 12px rgba(30,144,255,0.6));
     }
 
+    nav{
+      display:flex;
+    }
+
     nav a{
       color:var(--blanco);
       text-decoration:none;
@@ -71,13 +75,13 @@
       url('https://images.unsplash.com/photo-1515923152115-758a6b16f8b9');
       background-size:cover;
       background-position:center;
-      height:85vh;
+      min-height:85vh;
       display:flex;
       justify-content:center;
       align-items:center;
       text-align:center;
       color:var(--blanco);
-      padding:20px;
+      padding:40px 20px;
     }
 
     .hero h2{
@@ -97,8 +101,10 @@
       padding:14px 34px;
       border-radius:30px;
       text-decoration:none;
+      font-size:16px;
       box-shadow:0 0 20px rgba(30,144,255,0.4);
       transition:0.3s;
+      display:inline-block;
     }
 
     .btn:hover{
@@ -142,6 +148,7 @@
     .service h4{
       color:var(--azul-principal);
       margin-bottom:10px;
+      font-size:20px;
     }
 
     .about{
@@ -152,7 +159,7 @@
       line-height:1.8;
     }
 
-    /* CONTACTO ICONOS */
+    /* CONTACTO */
     .contacto-icons{
       display:flex;
       flex-direction:column;
@@ -183,6 +190,7 @@
       margin-top:30px;
       color:#dcdcdc;
       line-height:1.7;
+      font-size:15px;
     }
 
     /* FOOTER */
@@ -193,17 +201,78 @@
       padding:25px;
       margin-top:60px;
       border-top:1px solid rgba(255,255,255,0.1);
+      font-size:14px;
     }
 
-    @media(max-width:768px){
+    /* ===================== */
+    /* RESPONSIVE - CELULAR */
+    /* ===================== */
+
+    @media (max-width: 768px){
+
       header{
         flex-direction:column;
+        padding:15px 20px;
+        gap:15px;
       }
+
       nav{
-        margin-top:12px;
+        flex-wrap:wrap;
+        justify-content:center;
+        gap:15px;
       }
+
+      nav a{
+        margin-left:0;
+        font-size:15px;
+      }
+
+      .logo{
+        height:48px;
+      }
+
+      .hero{
+        min-height:auto;
+        padding:80px 20px;
+      }
+
       .hero h2{
-        font-size:32px;
+        font-size:28px;
+      }
+
+      .hero p{
+        font-size:16px;
+      }
+
+      .btn{
+        padding:14px 28px;
+        font-size:15px;
+      }
+
+      section{
+        padding:50px 20px;
+      }
+
+      section h3{
+        font-size:26px;
+        margin-bottom:35px;
+      }
+
+      .services{
+        grid-template-columns:1fr;
+      }
+
+      .icon-link{
+        font-size:15px;
+      }
+
+      .icon-link img{
+        width:24px;
+        height:24px;
+      }
+
+      .horario{
+        font-size:14px;
       }
     }
   </style>
@@ -243,8 +312,10 @@
   <h3>Sobre Nosotros</h3>
   <div class="about">
     <p>
-      En <strong>RC Taller Automotriz</strong> trabajamos con transparencia,
-      puntualidad y compromiso para brindarte un servicio profesional y moderno.
+      En <strong>RC Taller Automotriz</strong> la transparencia y la puntualidad son nuestros pilares.
+       Recibe siempre un diagnóstico honesto y un presupuesto detallado antes de cualquier reparación, sin sorpresas. 
+       Nos comprometemos a entregarte tu vehículo en la fecha y hora acordada, porque valoramos tu tiempo tanto como el nuestro. 
+       Un servicio de calidad que te da total tranquilidad.
     </p>
   </div>
 </section>
@@ -253,7 +324,6 @@
   <h3>Contacto</h3>
   <div class="about contacto-icons">
 
-    <p>Direccion: </p>
     <a href="https://www.google.com/maps/search/?api=1&query=Avenida+Universitaria+9452+Comas+Lima" target="_blank" class="icon-link">
       <img src="img/map.png"> Avenida Universitaria N° 9452, Comas
     </a>

@@ -5,354 +5,932 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>RC Taller Automotriz</title>
   <link rel="icon" href="img/RC.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Exo+2:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
 
   <style>
-    :root{
-      --negro-fondo:#0B0F1A;
-      --azul-principal:#1E90FF;
-      --azul-secundario:#0D1B2A;
-      --blanco:#FFFFFF;
-      --gris:#CFCFCF;
+    :root {
+      --bg:       #050a12;
+      --bg2:      #0b1c2c;
+      --bg3:      #0e1621;
+      --blue:     #00b4ff;
+      --blue2:    #0077b6;
+      --dim:      rgba(0,180,255,0.12);
+      --mid:      rgba(0,180,255,0.22);
+      --text:     #e6eef7;
+      --muted:    #9ecfff;
     }
 
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family:'Segoe UI', Arial, Helvetica, sans-serif;
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    html { scroll-behavior:smooth; }
+
+    body {
+      font-family: 'Exo 2', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
     }
 
-    body{
-      background:var(--negro-fondo);
-      color:var(--gris);
+    /* ── GRID OVERLAY ── */
+    body::before {
+      content:'';
+      position:fixed; inset:0;
+      background-image:
+        linear-gradient(rgba(0,180,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,180,255,0.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events:none; z-index:0;
     }
 
-    /* HEADER */
-    header{
-      background:linear-gradient(90deg, var(--negro-fondo), var(--azul-secundario));
-      padding:20px 40px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      border-bottom:1px solid rgba(255,255,255,0.1);
+    /* ── NAV ── */
+    nav {
+      position: sticky; top:0; z-index:100;
+      display: flex; align-items:center; justify-content:space-between;
+      padding: 0 48px;
+      height: 70px;
+      background: linear-gradient(90deg, rgba(0,0,0,0.95), rgba(11,28,44,0.95));
+      border-bottom: 1px solid var(--mid);
+      backdrop-filter: blur(12px);
     }
 
-    .logo{
-      height:55px;
-      filter: drop-shadow(0 0 12px rgba(30,144,255,0.6));
+    .nav-logo {
+      display:flex; align-items:center; gap:12px;
     }
 
-    nav{
-      display:flex;
+    .nav-logo-box {
+      width:42px; height:42px; border-radius:10px;
+      background: var(--dim); border:1px dashed var(--mid);
+      display:flex; align-items:center; justify-content:center;
+      overflow:hidden;
     }
 
-    nav a{
-      color:var(--blanco);
-      text-decoration:none;
-      margin-left:20px;
-      font-weight:600;
-      position:relative;
+    .nav-logo-box img { width:100%; height:100%; object-fit:contain; }
+
+    .nav-brand {
+      font-family:'Rajdhani', sans-serif;
+      font-size:20px; font-weight:700;
+      color: var(--blue); letter-spacing:2px; text-transform:uppercase;
     }
 
-    nav a::after{
-      content:"";
-      position:absolute;
-      width:0;
-      height:2px;
-      background:var(--azul-principal);
-      left:0;
-      bottom:-5px;
-      transition:0.3s;
+    .nav-links { display:flex; gap:32px; list-style:none; }
+
+    .nav-links a {
+      font-size:13px; font-weight:600; letter-spacing:1.5px;
+      text-transform:uppercase; color:var(--muted);
+      text-decoration:none; transition:color 0.25s;
+      position:relative; padding-bottom:4px;
     }
 
-    nav a:hover::after{
-      width:100%;
+    .nav-links a::after {
+      content:''; position:absolute; bottom:0; left:0;
+      width:0; height:1px; background:var(--blue); transition:width 0.3s;
     }
 
-    /* HERO */
-    .hero{
-      background:linear-gradient(rgba(11,15,26,0.85), rgba(11,15,26,0.9)),
-      url('https://images.unsplash.com/photo-1515923152115-758a6b16f8b9');
-      background-size:cover;
-      background-position:center;
-      min-height:85vh;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      text-align:center;
-      color:var(--blanco);
-      padding:40px 20px;
+    .nav-links a:hover { color:var(--blue); }
+    .nav-links a:hover::after { width:100%; }
+
+    .nav-cta {
+      padding:9px 22px;
+      background: linear-gradient(90deg, var(--blue), var(--blue2));
+      color:#fff; border:none; border-radius:8px;
+      font-family:'Rajdhani', sans-serif; font-weight:700;
+      font-size:13px; letter-spacing:1px; text-transform:uppercase;
+      cursor:pointer; transition:0.3s; text-decoration:none;
     }
 
-    .hero h2{
-      font-size:46px;
-      margin-bottom:15px;
+    .nav-cta:hover { background:linear-gradient(90deg,#0096c7,#005f87); transform:translateY(-1px); }
+
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:4px; }
+    .hamburger span { width:24px; height:2px; background:var(--blue); border-radius:2px; transition:0.3s; }
+
+    /* ── HERO ── */
+    .hero {
+      position:relative; min-height:92vh;
+      display:flex; align-items:center; justify-content:center;
+      padding: 80px 48px; overflow:hidden;
+      background:
+        linear-gradient(rgba(5,10,18,0.7), rgba(5,10,18,0.85)),
+        url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1600&q=80') center/cover no-repeat;
     }
 
-    .hero p{
-      font-size:18px;
-      margin-bottom:30px;
-      color:#e0e0e0;
+    .hero-decor {
+      position:absolute; right:-80px; top:50%;
+      transform:translateY(-50%);
+      width:560px; height:560px; border-radius:50%;
+      border:1px solid rgba(0,180,255,0.1);
+      animation: spin 24s linear infinite;
+      pointer-events:none;
     }
 
-    .btn{
-      background:var(--azul-principal);
-      color:var(--blanco);
-      padding:14px 34px;
-      border-radius:30px;
-      text-decoration:none;
-      font-size:16px;
-      box-shadow:0 0 20px rgba(30,144,255,0.4);
-      transition:0.3s;
+    .hero-decor::before {
+      content:''; position:absolute;
+      top:-5px; left:50%; transform:translateX(-50%);
+      width:10px; height:10px; border-radius:50%;
+      background:var(--blue); box-shadow:0 0 16px var(--blue);
+    }
+
+    .hero-decor2 {
+      position:absolute; right:30px; top:50%;
+      transform:translateY(-50%);
+      width:420px; height:420px; border-radius:50%;
+      border:1px solid rgba(0,180,255,0.06);
+      animation: spin 16s linear infinite reverse;
+      pointer-events:none;
+    }
+
+    @keyframes spin {
+      from { transform:translateY(-50%) rotate(0deg); }
+      to   { transform:translateY(-50%) rotate(360deg); }
+    }
+
+    .hero-content { position:relative; z-index:2; max-width:640px; }
+
+    .hero-eyebrow {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:5px 14px;
+      background:var(--dim); border:1px solid var(--mid); border-radius:20px;
+      font-size:11px; font-weight:600; letter-spacing:2.5px;
+      text-transform:uppercase; color:var(--blue); margin-bottom:22px;
+      animation: fadeUp 0.7s ease both;
+    }
+
+    .hero-dot {
+      width:6px; height:6px; border-radius:50%;
+      background:var(--blue); box-shadow:0 0 8px var(--blue);
+      animation:pulse 2s infinite;
+    }
+
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.2} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+
+    .hero h1 {
+      font-family:'Rajdhani', sans-serif;
+      font-size:clamp(42px,6vw,72px); font-weight:700;
+      line-height:1.05; letter-spacing:2px; text-transform:uppercase;
+      color:var(--text); margin-bottom:18px;
+      animation: fadeUp 0.7s 0.1s ease both;
+    }
+
+    .hero h1 span { color:var(--blue); }
+
+    .hero p {
+      font-size:16px; color:var(--muted); line-height:1.8;
+      font-weight:300; margin-bottom:34px;
+      animation: fadeUp 0.7s 0.2s ease both;
+    }
+
+    .hero-actions {
+      display:flex; gap:14px; flex-wrap:wrap;
+      animation: fadeUp 0.7s 0.3s ease both;
+    }
+
+    .btn-primary {
+      padding:13px 30px;
+      background:linear-gradient(90deg, var(--blue), var(--blue2));
+      color:#fff; border:none; border-radius:10px;
+      font-family:'Rajdhani', sans-serif; font-weight:700;
+      font-size:15px; letter-spacing:1px; text-transform:uppercase;
+      cursor:pointer; transition:0.3s; text-decoration:none;
       display:inline-block;
     }
 
-    .btn:hover{
-      transform:translateY(-3px);
-      box-shadow:0 0 30px rgba(30,144,255,0.7);
+    .btn-primary:hover { background:linear-gradient(90deg,#0096c7,#005f87); transform:translateY(-2px); }
+
+    .btn-outline {
+      padding:13px 30px;
+      background:transparent; color:var(--blue);
+      border:1px solid var(--mid); border-radius:10px;
+      font-family:'Rajdhani', sans-serif; font-weight:700;
+      font-size:15px; letter-spacing:1px; text-transform:uppercase;
+      cursor:pointer; transition:0.3s; text-decoration:none;
+      display:inline-block;
     }
 
-    /* SECTIONS */
-    section{
-      padding:70px 40px;
-      max-width:1200px;
-      margin:auto;
+    .btn-outline:hover { background:var(--dim); border-color:var(--blue); }
+
+    .hero-stats {
+      display:flex; gap:40px; margin-top:48px; padding-top:28px;
+      border-top:1px solid rgba(255,255,255,0.07);
+      animation: fadeUp 0.7s 0.4s ease both;
     }
 
-    section h3{
-      text-align:center;
-      margin-bottom:50px;
-      font-size:34px;
-      color:var(--blanco);
+    .stat-num {
+      font-family:'Rajdhani', sans-serif; font-size:30px;
+      font-weight:700; color:var(--blue);
     }
 
-    .services{
+    .stat-label {
+      font-size:11px; color:var(--muted);
+      letter-spacing:1px; text-transform:uppercase;
+    }
+
+    /* ── SECTION COMMONS ── */
+    .section { position:relative; z-index:1; padding:90px 48px; }
+    .section-inner { max-width:1160px; margin:0 auto; }
+
+    .section-tag {
+      font-size:11px; font-weight:600; letter-spacing:3px;
+      text-transform:uppercase; color:var(--blue); margin-bottom:10px;
+    }
+
+    .section-title {
+      font-family:'Rajdhani', sans-serif; font-size:clamp(28px,3.5vw,40px);
+      font-weight:700; letter-spacing:1px; text-transform:uppercase;
+      color:var(--text); margin-bottom:6px;
+    }
+
+    .section-title span { color:var(--blue); }
+
+    .section-line {
+      width:56px; height:2px;
+      background:linear-gradient(90deg, var(--blue), transparent);
+      margin-bottom:48px;
+    }
+
+    .divider {
+      height:1px;
+      background:linear-gradient(90deg, transparent, var(--mid), transparent);
+    }
+
+    /* ── SERVICES ── */
+    .services-bg { background:linear-gradient(180deg, transparent, rgba(0,20,40,0.35)); }
+
+    .services-grid {
       display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(250px,1fr));
-      gap:30px;
-    }
-
-    .service{
-      background:linear-gradient(145deg, var(--azul-secundario), #02040a);
-      padding:30px;
-      border-radius:16px;
-      text-align:center;
-      box-shadow:0 10px 25px rgba(0,0,0,0.6);
-      transition:0.3s;
-    }
-
-    .service:hover{
-      transform:translateY(-8px);
-    }
-
-    .service h4{
-      color:var(--azul-principal);
-      margin-bottom:10px;
-      font-size:20px;
-    }
-
-    .about{
-      background:linear-gradient(145deg, var(--azul-secundario), #02040a);
-      padding:35px;
-      border-radius:16px;
-      box-shadow:0 10px 25px rgba(0,0,0,0.6);
-      line-height:1.8;
-    }
-
-    /* CONTACTO */
-    .contacto-icons{
-      display:flex;
-      flex-direction:column;
+      grid-template-columns:repeat(auto-fit, minmax(240px,1fr));
       gap:20px;
     }
 
-    .icon-link{
-      display:flex;
-      align-items:center;
-      gap:15px;
-      text-decoration:none;
-      color:var(--azul-principal);
-      font-size:16px;
-      transition:0.3s;
+    .service-card {
+      background:var(--bg3);
+      border:1px solid var(--dim); border-radius:16px;
+      padding:28px; transition:0.3s; position:relative; overflow:hidden;
     }
 
-    .icon-link img{
-      width:28px;
-      height:28px;
+    .service-card::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:2px;
+      background:linear-gradient(90deg, transparent, var(--blue), transparent);
+      opacity:0; transition:0.3s;
     }
 
-    .icon-link:hover{
-      color:var(--blanco);
-      transform:translateX(6px);
+    .service-card:hover { border-color:var(--mid); transform:translateY(-5px); box-shadow:0 24px 48px rgba(0,0,0,0.4); }
+    .service-card:hover::before { opacity:1; }
+
+    .service-icon {
+      width:50px; height:50px; border-radius:12px;
+      background:var(--dim); border:1px solid var(--mid);
+      display:flex; align-items:center; justify-content:center;
+      font-size:22px; margin-bottom:18px;
     }
 
-    .horario{
-      margin-top:30px;
-      color:#dcdcdc;
-      line-height:1.7;
-      font-size:15px;
+    .service-name {
+      font-family:'Rajdhani', sans-serif; font-size:17px; font-weight:700;
+      letter-spacing:1px; text-transform:uppercase; margin-bottom:10px;
+      color:var(--blue);
     }
 
-    /* FOOTER */
-    footer{
-      background:#02040a;
-      color:#9aa4b2;
-      text-align:center;
-      padding:25px;
-      margin-top:60px;
-      border-top:1px solid rgba(255,255,255,0.1);
+    .service-desc { font-size:13px; color:var(--muted); line-height:1.7; font-weight:300; }
+
+    /* ── ABOUT ── */
+    .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
+
+    .about-card {
+      background:var(--bg3); border:1px solid var(--dim);
+      border-radius:18px; overflow:hidden;
+      box-shadow:0 24px 48px rgba(0,0,0,0.5);
+    }
+
+    .about-card-head {
+      padding:18px 24px;
+      background:linear-gradient(90deg, #000, var(--bg2));
+      border-bottom:1px solid var(--mid);
+      display:flex; align-items:center; gap:10px;
+    }
+
+    .about-card-dot {
+      width:8px; height:8px; border-radius:50%;
+      background:var(--blue); box-shadow:0 0 10px var(--blue);
+      animation:pulse 2s infinite;
+    }
+
+    .about-card-label {
+      font-family:'Rajdhani', sans-serif; font-weight:700;
+      font-size:13px; color:var(--blue); letter-spacing:2px; text-transform:uppercase;
+    }
+
+    .about-card-body { padding:6px 0; }
+
+    .about-row {
+      display:flex; justify-content:space-between; align-items:center;
+      padding:14px 24px; border-bottom:1px solid rgba(255,255,255,0.05);
       font-size:14px;
     }
 
-    /* ===================== */
-    /* RESPONSIVE - CELULAR */
-    /* ===================== */
+    .about-row:last-child { border-bottom:none; }
+    .about-row-label { color:var(--muted); font-weight:600; }
+    .about-row-val { font-family:'Rajdhani', sans-serif; font-size:16px; color:var(--blue); font-weight:700; letter-spacing:0.5px; }
 
-    @media (max-width: 768px){
+    .about-text { font-size:15px; color:var(--muted); line-height:1.9; font-weight:300; margin-bottom:18px; }
 
-      header{
-        flex-direction:column;
-        padding:15px 20px;
-        gap:15px;
+    .feature-list { list-style:none; display:flex; flex-direction:column; gap:12px; margin-top:8px; }
+
+    .feature-item {
+      display:flex; align-items:flex-start; gap:12px;
+      font-size:14px; color:var(--muted); line-height:1.5;
+    }
+
+    .feature-item::before { content:'▸'; color:var(--blue); font-size:12px; margin-top:2px; flex-shrink:0; }
+
+    /* ── CONTACT ── */
+    .contact-wrap {
+      display:grid; grid-template-columns:1fr 1fr; gap:0;
+      background:var(--bg3); border:1px solid var(--dim);
+      border-radius:18px; overflow:hidden;
+      box-shadow:0 24px 48px rgba(0,0,0,0.5);
+    }
+
+    .contact-info {
+      padding:44px; background:linear-gradient(135deg,#000,var(--bg2));
+      border-right:1px solid var(--dim);
+    }
+
+    .contact-info-title {
+      font-family:'Rajdhani', sans-serif; font-size:26px; font-weight:700;
+      text-transform:uppercase; letter-spacing:2px; color:var(--blue); margin-bottom:10px;
+    }
+
+    .contact-info-sub { font-size:13px; color:var(--muted); line-height:1.7; margin-bottom:34px; font-weight:300; }
+
+    .contact-item { display:flex; align-items:flex-start; gap:14px; margin-bottom:24px; }
+
+    .contact-icon {
+      width:40px; height:40px; border-radius:10px;
+      background:var(--dim); border:1px solid var(--mid);
+      display:flex; align-items:center; justify-content:center;
+      font-size:18px; flex-shrink:0;
+    }
+
+    .contact-item-label { font-size:10px; color:var(--muted); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:3px; }
+    .contact-item-val { font-size:14px; font-weight:600; color:var(--text); }
+    .contact-item-val a { color:var(--text); text-decoration:none; transition:color 0.2s; }
+    .contact-item-val a:hover { color:var(--blue); }
+
+    .horario-block { margin-top:30px; padding-top:24px; border-top:1px solid rgba(0,180,255,0.1); }
+    .horario-title { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--blue); margin-bottom:12px; }
+    .horario-row { display:flex; justify-content:space-between; font-size:13px; color:var(--muted); padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+    .horario-row:last-child { border-bottom:none; }
+
+    .map-panel { padding:44px; }
+    .map-panel-title { font-family:'Rajdhani', sans-serif; font-size:20px; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:20px; }
+
+    .map-frame {
+      width:100%; height:240px; border-radius:12px; overflow:hidden;
+      border:1px solid var(--mid);
+    }
+
+    .map-frame iframe { width:100%; height:100%; border:none; }
+
+    .map-cta {
+      display:flex; flex-direction:column; gap:12px; margin-top:20px;
+    }
+
+    .map-btn {
+      display:flex; align-items:center; gap:10px;
+      padding:12px 16px; border-radius:10px;
+      background:var(--dim); border:1px solid var(--mid);
+      color:var(--text); text-decoration:none; font-size:14px;
+      font-weight:600; transition:0.25s;
+    }
+
+    .map-btn:hover { background:rgba(0,180,255,0.18); color:var(--blue); transform:translateX(4px); }
+
+    /* ── FOOTER ── */
+    footer {
+      background:#02040a; border-top:1px solid var(--mid);
+      padding:28px 48px;
+      display:flex; align-items:center; justify-content:space-between;
+      position:relative; z-index:1;
+    }
+
+    .footer-brand {
+      font-family:'Rajdhani', sans-serif; font-size:16px; font-weight:700;
+      color:var(--blue); letter-spacing:2px; text-transform:uppercase;
+    }
+
+    .footer-copy { font-size:12px; color:var(--muted); opacity:0.55; }
+
+    .footer-links { display:flex; gap:20px; }
+    .footer-links a { font-size:12px; color:var(--muted); text-decoration:none; opacity:0.6; transition:opacity 0.2s; }
+    .footer-links a:hover { opacity:1; color:var(--blue); }
+
+    /* ── CAROUSEL ── */
+    .carousel-section {
+      position:relative; z-index:1;
+      padding:90px 0;
+      background:linear-gradient(180deg, rgba(0,20,40,0.3), transparent);
+      overflow:hidden;
+    }
+
+    .carousel-header {
+      max-width:1160px; margin:0 auto; padding:0 48px;
+      margin-bottom:40px;
+    }
+
+    .carousel-outer {
+      position:relative;
+      max-width:100%;
+      user-select:none;
+    }
+
+    .carousel-track-wrap {
+      overflow:hidden;
+      border-top:1px solid var(--mid);
+      border-bottom:1px solid var(--mid);
+    }
+
+    .carousel-track {
+      display:flex;
+      transition:transform 0.6s cubic-bezier(0.77,0,0.18,1);
+      will-change:transform;
+    }
+
+    .carousel-slide {
+      flex:0 0 25%;
+      min-width:0;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .carousel-slide img {
+      width:100%; height:320px;
+      object-fit:cover; display:block;
+      transition:transform 0.5s ease;
+      filter:brightness(0.75);
+    }
+
+    .carousel-slide:hover img {
+      transform:scale(1.04);
+      filter:brightness(0.9);
+    }
+
+    .carousel-slide-overlay {
+      position:absolute; inset:0;
+      background:linear-gradient(to top, rgba(5,10,18,0.7) 0%, transparent 60%);
+      pointer-events:none;
+    }
+
+    .carousel-slide-label {
+      position:absolute; bottom:16px; left:16px;
+      font-family:'Rajdhani', sans-serif; font-size:14px; font-weight:700;
+      letter-spacing:1.5px; text-transform:uppercase;
+      color:#fff; background:rgba(0,180,255,0.15);
+      border:1px solid rgba(0,180,255,0.3);
+      padding:4px 12px; border-radius:6px;
+      backdrop-filter:blur(4px);
+    }
+
+    .carousel-btn {
+      position:absolute; top:50%; transform:translateY(-50%);
+      width:46px; height:46px; border-radius:50%;
+      background:rgba(5,10,18,0.85); border:1px solid var(--mid);
+      color:var(--blue); font-size:18px;
+      cursor:pointer; transition:0.25s; z-index:10;
+      display:flex; align-items:center; justify-content:center;
+      backdrop-filter:blur(6px);
+    }
+
+    .carousel-btn:hover { background:rgba(0,180,255,0.15); border-color:var(--blue); transform:translateY(-50%) scale(1.08); }
+    .carousel-btn.prev { left:16px; }
+    .carousel-btn.next { right:16px; }
+
+    .carousel-dots {
+      display:flex; justify-content:center; gap:8px;
+      margin-top:24px;
+    }
+
+    .carousel-dot {
+      width:28px; height:3px; border-radius:2px;
+      background:rgba(0,180,255,0.2);
+      cursor:pointer; transition:0.3s;
+      border:none;
+    }
+
+    .carousel-dot.active { background:var(--blue); width:44px; }
+
+    .carousel-counter {
+      text-align:center; margin-top:12px;
+      font-family:'Rajdhani', sans-serif; font-size:13px;
+      font-weight:600; letter-spacing:2px; color:var(--muted);
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width:768px) {
+      nav { padding:0 20px; }
+      .nav-links, .nav-cta { display:none; }
+      .hamburger { display:flex; }
+
+      .nav-links.open {
+        display:flex; flex-direction:column;
+        position:absolute; top:70px; left:0; right:0;
+        background:rgba(5,10,18,0.97); padding:20px 24px;
+        border-bottom:1px solid var(--mid); gap:18px;
       }
 
-      nav{
-        flex-wrap:wrap;
-        justify-content:center;
-        gap:15px;
-      }
+      .hero { padding:60px 20px; min-height:auto; }
+      .hero-decor, .hero-decor2 { display:none; }
+      .hero-stats { gap:24px; flex-wrap:wrap; }
 
-      nav a{
-        margin-left:0;
-        font-size:15px;
-      }
+      .section { padding:60px 20px; }
+      .about-grid { grid-template-columns:1fr; gap:32px; }
+      .contact-wrap { grid-template-columns:1fr; }
+      .contact-info { border-right:none; border-bottom:1px solid var(--dim); padding:30px 24px; }
+      .map-panel { padding:30px 24px; }
+      .map-frame { height:200px; }
 
-      .logo{
-        height:48px;
-      }
+      footer { flex-direction:column; gap:12px; text-align:center; padding:24px 20px; }
+      .footer-links { flex-wrap:wrap; justify-content:center; }
 
-      .hero{
-        min-height:auto;
-        padding:80px 20px;
-      }
-
-      .hero h2{
-        font-size:28px;
-      }
-
-      .hero p{
-        font-size:16px;
-      }
-
-      .btn{
-        padding:14px 28px;
-        font-size:15px;
-      }
-
-      section{
-        padding:50px 20px;
-      }
-
-      section h3{
-        font-size:26px;
-        margin-bottom:35px;
-      }
-
-      .services{
-        grid-template-columns:1fr;
-      }
-
-      .icon-link{
-        font-size:15px;
-      }
-
-      .icon-link img{
-        width:24px;
-        height:24px;
-      }
-
-      .horario{
-        font-size:14px;
-      }
+      .carousel-section { padding:60px 0; }
+      .carousel-header { padding:0 20px; }
+      .carousel-slide { flex:0 0 85%; }
+      .carousel-slide img { height:220px; }
+      .carousel-btn { width:36px; height:36px; font-size:14px; }
     }
   </style>
 </head>
 
 <body>
 
-<header>
-  <img src="img/RC-logo.png" alt="RC Taller Automotriz" class="logo">
-  <nav>
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-box">
+      <img src="img/RC-logo.png" alt="RC" onerror="this.style.display='none'; this.parentElement.innerHTML='🔧';">
+    </div>
+    <span class="nav-brand">RC Taller</span>
+  </div>
+
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#inicio">Inicio</a></li>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+
+  <a href="https://wa.me/51935983152" target="_blank" class="nav-cta" style="display:none;" id="navCtaDesktop">WhatsApp</a>
+
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero" id="inicio">
+  <div class="hero-decor"></div>
+  <div class="hero-decor2"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow"><span class="hero-dot"></span>Taller certificado · Comas, Lima</div>
+    <h1>Tu vehículo en<br><span>manos expertas</span></h1>
+    <p>Mantenimiento, diagnóstico computarizado y reparación con transparencia, puntualidad y tecnología de punta.</p>
+    <div class="hero-actions">
+      <a href="https://wa.me/51935983152" target="_blank" class="btn-primary">Solicitar Servicio</a>
+      <a href="#servicios" class="btn-outline">Ver Servicios</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-num">4</div><div class="stat-label">Servicios clave</div></div>
+      <div><div class="stat-num">100%</div><div class="stat-label">Diagnóstico honesto</div></div>
+      <div><div class="stat-num">6</div><div class="stat-label">Días de atención</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── SERVICES ── -->
+<section class="section services-bg" id="servicios">
+  <div class="section-inner">
+    <div class="section-tag">// Lo que hacemos</div>
+    <h2 class="section-title">Nuestros <span>Servicios</span></h2>
+    <div class="section-line"></div>
+
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">🔧</div>
+        <div class="service-name">Mantenimiento Preventivo</div>
+        <p class="service-desc">Cambio de aceite, filtros y revisiones generales para mantener tu vehículo en óptimas condiciones.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">💻</div>
+        <div class="service-name">Diagnóstico Computarizado</div>
+        <p class="service-desc">Escaneo profesional con equipo de última generación para detectar fallas con precisión.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🛞</div>
+        <div class="service-name">Frenos y Suspensión</div>
+        <p class="service-desc">Revisión y cambio de pastillas, discos y amortiguadores. Seguridad y estabilidad garantizadas.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">⚙️</div>
+        <div class="service-name">Mecánica General</div>
+        <p class="service-desc">Soluciones confiables para todo tipo de falla mecánica con repuestos de calidad.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── CAROUSEL ── -->
+<section class="carousel-section" id="galeria">
+  <div class="carousel-header">
+    <div class="section-tag">// Nuestro trabajo</div>
+    <h2 class="section-title">Galería del <span>Taller</span></h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="carousel-outer">
+    <div class="carousel-track-wrap">
+      <div class="carousel-track" id="carTrack">
+
+        <div class="carousel-slide">
+          <img src="img/galeria1.jpg" alt="Diagnóstico">
+          <div class="carousel-slide-overlay"></div>
+          <div class="carousel-slide-label">Diagnóstico</div>
+        </div>
+
+        <div class="carousel-slide">
+          <img src="img/galeria2.jpg" alt="Mantenimiento">
+          <div class="carousel-slide-overlay"></div>
+          <div class="carousel-slide-label">Mantenimiento</div>
+        </div>
+
+        <div class="carousel-slide">
+          <img src="img/galeria3.jpg" alt="Frenos">
+          <div class="carousel-slide-overlay"></div>
+          <div class="carousel-slide-label">Frenos</div>
+        </div>
+
+        <div class="carousel-slide">
+          <img src="img/galeria4.jpg" alt="Equipamiento">
+          <div class="carousel-slide-overlay"></div>
+          <div class="carousel-slide-label">Equipamiento</div>
+        </div>
+
+      </div>
+    </div>
+
+    <button class="carousel-btn prev" id="carPrev" aria-label="Anterior">&#8249;</button>
+    <button class="carousel-btn next" id="carNext" aria-label="Siguiente">&#8250;</button>
+  </div>
+
+  <div class="carousel-dots" id="carDots"></div>
+  <div class="carousel-counter" id="carCounter">1 / 4</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── ABOUT ── -->
+<section class="section" id="nosotros">
+  <div class="section-inner">
+    <div class="about-grid">
+
+      <div class="about-card">
+        <div class="about-card-head">
+          <div class="about-card-dot"></div>
+          <span class="about-card-label">Datos del taller</span>
+        </div>
+        <div class="about-card-body">
+          <div class="about-row"><span class="about-row-label">Ubicación</span><span class="about-row-val">Comas, Lima</span></div>
+          <div class="about-row"><span class="about-row-label">Diagnóstico previo</span><span class="about-row-val">Sin costo</span></div>
+          <div class="about-row"><span class="about-row-label">Atención</span><span class="about-row-val">Lun–Sáb</span></div>
+          <div class="about-row"><span class="about-row-label">Presupuesto</span><span class="about-row-val">Detallado</span></div>
+          <div class="about-row"><span class="about-row-label">Satisfacción</span><span class="about-row-val">Garantizada</span></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-tag">// Quiénes somos</div>
+        <h2 class="section-title">Transparencia &<br><span>Confianza</span></h2>
+        <div class="section-line"></div>
+        <p class="about-text">En <strong style="color:var(--text);font-weight:600;">RC Taller Automotriz</strong> la transparencia y la puntualidad son nuestros pilares. Recibes siempre un diagnóstico honesto y un presupuesto detallado antes de cualquier reparación, sin sorpresas.</p>
+        <p class="about-text">Nos comprometemos a entregarte tu vehículo en la fecha y hora acordada, porque valoramos tu tiempo tanto como el nuestro.</p>
+        <ul class="feature-list">
+          <li class="feature-item">Diagnóstico honesto antes de iniciar cualquier trabajo</li>
+          <li class="feature-item">Presupuesto detallado y transparente, sin costos ocultos</li>
+          <li class="feature-item">Entrega puntual en fecha y hora acordada</li>
+          <li class="feature-item">Atención personalizada y seguimiento del servicio</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── CONTACT ── -->
+<section class="section" id="contacto">
+  <div class="section-inner">
+    <div style="text-align:center; margin-bottom:44px;">
+      <div class="section-tag" style="display:block;">// Encuéntranos</div>
+      <h2 class="section-title">Contacto & <span>Ubicación</span></h2>
+      <div class="section-line" style="margin:0 auto;"></div>
+    </div>
+
+    <div class="contact-wrap">
+
+      <div class="contact-info">
+        <div class="contact-info-title">Hablemos</div>
+        <p class="contact-info-sub">Escríbenos, visítanos o llámanos. Respondemos rápido en horario de atención.</p>
+
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <div>
+            <div class="contact-item-label">Dirección</div>
+            <div class="contact-item-val">
+              <a href="https://www.google.com/maps/search/?api=1&query=Avenida+Universitaria+9452+Comas+Lima" target="_blank">
+                Av. Universitaria N° 9452, Comas
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon">💬</div>
+          <div>
+            <div class="contact-item-label">WhatsApp</div>
+            <div class="contact-item-val"><a href="https://wa.me/51935983152" target="_blank">+51 935 983 152</a></div>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon">📧</div>
+          <div>
+            <div class="contact-item-label">Email</div>
+            <div class="contact-item-val"><a href="mailto:contacto@rctallerautomotriz.com">contacto@rctallerautomotriz.com</a></div>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon">📸</div>
+          <div>
+            <div class="contact-item-label">Instagram</div>
+            <div class="contact-item-val"><a href="https://www.instagram.com/rc_taller_automotriz_" target="_blank">@rc_taller_automotriz</a></div>
+          </div>
+        </div>
+
+        <div class="horario-block">
+          <div class="horario-title">Horario de atención</div>
+          <div class="horario-row"><span>Lunes, Martes, Jueves, Viernes</span><span>8:00 AM – 6:00 PM</span></div>
+          <div class="horario-row"><span>Miércoles</span><span>10:00 AM – 4:00 PM</span></div>
+          <div class="horario-row"><span>Sábados</span><span>8:00 AM – 6:00 PM</span></div>
+          <div class="horario-row"><span>Domingos</span><span>Cerrado</span></div>
+        </div>
+      </div>
+
+      <div class="map-panel">
+        <div class="map-panel-title">Cómo <span style="color:var(--blue);">Llegar</span></div>
+
+        <div class="map-frame">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d975.2!2d-77.05!3d-11.93!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zAvenida+Universitaria+9452+Comas!5e0!3m2!1ses!2spe!4v1"
+            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+
+        <div class="map-cta">
+          <a href="https://www.google.com/maps/search/?api=1&query=Avenida+Universitaria+9452+Comas+Lima" target="_blank" class="map-btn">
+            📍 Abrir en Google Maps
+          </a>
+          <a href="https://wa.me/51935983152?text=Hola!%20Quiero%20agendar%20un%20servicio" target="_blank" class="map-btn">
+            💬 Escribir por WhatsApp
+          </a>
+          <a href="https://www.instagram.com/rc_taller_automotriz_" target="_blank" class="map-btn">
+            📸 Ver Instagram
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-brand">⚙ RC Taller Automotriz</div>
+  <div class="footer-copy">© 2025 RC Taller Automotriz · Todos los derechos reservados</div>
+  <div class="footer-links">
     <a href="#inicio">Inicio</a>
     <a href="#servicios">Servicios</a>
-    <a href="#nosotros">Nosotros</a>
     <a href="#contacto">Contacto</a>
-  </nav>
-</header>
-
-<section class="hero" id="inicio">
-  <div>
-    <h2>Tu vehículo en manos expertas</h2>
-    <p>Mantenimiento, diagnóstico y reparación con tecnología y confianza</p>
-    <a href="#contacto" class="btn">Solicitar Servicio</a>
   </div>
-</section>
-
-<section id="servicios">
-  <h3>Nuestros Servicios</h3>
-  <div class="services">
-    <div class="service"><h4>Mantenimiento Preventivo</h4><p>Cambio de aceite y revisiones generales.</p></div>
-    <div class="service"><h4>Diagnóstico Computarizado</h4><p>Escaneo profesional de fallas.</p></div>
-    <div class="service"><h4>Frenos y Suspensión</h4><p>Seguridad y estabilidad garantizadas.</p></div>
-    <div class="service"><h4>Mecánica General</h4><p>Soluciones confiables.</p></div>
-  </div>
-</section>
-
-<section id="nosotros">
-  <h3>Sobre Nosotros</h3>
-  <div class="about">
-    <p>
-      En <strong>RC Taller Automotriz</strong> la transparencia y la puntualidad son nuestros pilares.
-       Recibe siempre un diagnóstico honesto y un presupuesto detallado antes de cualquier reparación, sin sorpresas. 
-       Nos comprometemos a entregarte tu vehículo en la fecha y hora acordada, porque valoramos tu tiempo tanto como el nuestro. 
-       Un servicio de calidad que te da total tranquilidad.
-    </p>
-  </div>
-</section>
-
-<section id="contacto">
-  <h3>Contacto</h3>
-  <div class="about contacto-icons">
-
-    <a href="https://www.google.com/maps/search/?api=1&query=Avenida+Universitaria+9452+Comas+Lima" target="_blank" class="icon-link">
-      <img src="img/map.png"> Avenida Universitaria N° 9452, Comas
-    </a>
-
-    <a href="https://wa.me/51935983152" target="_blank" class="icon-link">
-      <img src="img/whatsapp.png"> +51 935 983 152
-    </a>
-
-    <a href="mailto:contacto@rctallerautomotriz.com" class="icon-link">
-      <img src="img/email.png"> contacto@rctallerautomotriz.com
-    </a>
-
-    <a href="https://www.instagram.com/rc_taller_automotriz_?igsh=NXN2ZWRkMm80aGc2" target="_blank" class="icon-link">
-      <img src="img/instagram.png"> @rc_taller_automotriz
-    </a>
-
-    <p class="horario">
-      <strong>Horario:</strong><br>
-      Lunes a Viernes: 8:00 AM - 6:00 PM<br>
-      Miércoles: 10:00 AM - 4:00 PM<br>
-      Sábados: 8:00 AM - 6:00 PM
-    </p>
-
-  </div>
-</section>
-
-<footer>
-  © 2025 RC Taller Automotriz | Todos los derechos reservados
 </footer>
+
+<script>
+  function toggleMenu(){
+    const links = document.getElementById('navLinks');
+    links.classList.toggle('open');
+  }
+
+  // Show desktop CTA only on wider screens
+  function checkNav(){
+    const cta = document.getElementById('navCtaDesktop');
+    if(window.innerWidth > 768) cta.style.display = 'inline-block';
+    else cta.style.display = 'none';
+  }
+  checkNav();
+  window.addEventListener('resize', checkNav);
+
+  // Close menu on link click
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', () => {
+      document.getElementById('navLinks').classList.remove('open');
+    });
+  });
+
+  // ── CAROUSEL ──
+  (function(){
+    const track    = document.getElementById('carTrack');
+    const slides   = track.querySelectorAll('.carousel-slide');
+    const dotsWrap = document.getElementById('carDots');
+    const counter  = document.getElementById('carCounter');
+    const total    = slides.length;
+    let perView    = window.innerWidth <= 768 ? 1 : 4;
+    let current    = 0;
+    let autoTimer;
+
+    // Build dots (one per "page")
+    function pages(){ return Math.ceil(total / perView); }
+
+    function buildDots(){
+      dotsWrap.innerHTML = '';
+      for(let i = 0; i < pages(); i++){
+        const d = document.createElement('button');
+        d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+        d.setAttribute('aria-label', 'Ir a página ' + (i+1));
+        d.onclick = () => goTo(i * perView);
+        dotsWrap.appendChild(d);
+      }
+    }
+
+    function updateDots(){
+      const page = Math.floor(current / perView);
+      dotsWrap.querySelectorAll('.carousel-dot').forEach((d,i) => {
+        d.classList.toggle('active', i === page);
+      });
+    }
+
+    function updateCounter(){
+      const page = Math.floor(current / perView) + 1;
+      counter.textContent = page + ' / ' + pages();
+    }
+
+    function goTo(idx){
+      // Infinite loop clamping
+      if(idx < 0) idx = total - perView;
+      if(idx > total - perView) idx = 0;
+      current = idx;
+      const offset = -(current * (100 / total));
+      track.style.transform = 'translateX(' + offset + '%)';
+      updateDots();
+      updateCounter();
+    }
+
+    function next(){ goTo(current + perView); }
+    function prev(){ goTo(current - perView); }
+
+    document.getElementById('carNext').onclick = () => { next(); resetAuto(); };
+    document.getElementById('carPrev').onclick = () => { prev(); resetAuto(); };
+
+    // Swipe support
+    let startX = 0;
+    track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, {passive:true});
+    track.addEventListener('touchend',   e => {
+      const dx = e.changedTouches[0].clientX - startX;
+      if(Math.abs(dx) > 40){ dx < 0 ? next() : prev(); resetAuto(); }
+    });
+
+    function startAuto(){ autoTimer = setInterval(next, 4000); }
+    function resetAuto(){ clearInterval(autoTimer); startAuto(); }
+
+    function init(){
+      perView = window.innerWidth <= 768 ? 1 : 4;
+      // Set each slide width relative to track
+      slides.forEach(s => s.style.flex = '0 0 ' + (100/total) + '%');
+      buildDots();
+      goTo(0);
+      startAuto();
+    }
+
+    window.addEventListener('resize', () => {
+      clearInterval(autoTimer);
+      init();
+    });
+
+    init();
+  })();
+</script>
 
 </body>
 </html>
